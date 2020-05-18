@@ -12,8 +12,6 @@ app.use(express.static('public'));
 app.use(routes);
 
 // mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true});
-mongoose.connect(process.env.MONGODB_UYI ||'mongodb://localhost/workout', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+mongoose.connect(process.env.MONGODB_URI ||'mongodb://localhost/mongoHeadlines', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
 
 app.listen(PORT);
-
-

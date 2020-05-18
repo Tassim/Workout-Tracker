@@ -16,27 +16,16 @@ getLastWorkout: async (req, res) => {
 },
 
 addExercise: async (req, res) => {
-  console.log("addExerciseBODY:", req.body);  
-  console.log("addExercisePARAMS:", req.params);
   const { id } = req.params;
   const { type, name, duration, distance, weight, reps, sets } = req.body;
-  console.log(type);
   try {
-    if(type === 'cardio') {
-    const cardioExercise = await Workout.findByIdAndUpdate(id, {$push: { exercises: req.body}}, { new: true } );
-    console.log("CARDIO", cardioExercise);
-    return res.status(200).json(cardioExercise);
-  } else {
-    const resistanceExercise = await Workout.findByIdAndUpdate(id, {$push: { exercises: req.body }}, {new: true} );
-    console.log("RESISTANCE", resistanceExercise);
-    return res.status(200).json(resistanceExercise);
-  }
+    const newExercise = await Workout.findByIdAndUpdate(id, {$push: { exercises: req.body}}, { new: true } );
+    return res.status(200).json(newExercise);
   } catch (e) {
     return res.status(403).json(e);
   }
 },
 createWorkout: async (req, res) => {
-  // console.log("createworkout:", req.body);  
   try {
     const newWorkout = await new Workout();
     newWorkout.save();
@@ -46,10 +35,9 @@ createWorkout: async (req, res) => {
     return res.status(403).json(e);    
   }
 },
-
 getWorkoutsInRange: async (req, res) => {
   try {
-    const allWorkouts = await Workout.find();
+    const allWorkouts = await Workout.find({});
       console.log(allWorkouts);
     if (!allWorkouts) {
       return res.status(400).json({ error: 'There are no workouts saved' });
@@ -60,14 +48,3 @@ getWorkoutsInRange: async (req, res) => {
   }
 },
 }
-
-// newExercise = { type, name, duration, weight, reps, sets, distance }
-// Workout.findByIdAndUpdate(id, { $push: { exercises: newExercise } })
-
-// const workout = Workout.findById(id)
-// const exercise = new exercise(newExercise)
-// workout.exercises.push(exercise)
-// workout.save()
-
-
-// Workout.findByIdAndUpdate(id, { $push: { exercises: exercise._id } })
